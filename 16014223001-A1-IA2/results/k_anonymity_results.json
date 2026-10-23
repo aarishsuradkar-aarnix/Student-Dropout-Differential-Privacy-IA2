@@ -1,0 +1,51 @@
+{
+  "k_anonymity_metrics": {
+    "k=5": {
+      "total_equivalence_classes": 816,
+      "violating_classes_count": 690,
+      "violating_records_count": 229,
+      "compliance_percentage": 94.82
+    },
+    "k=10": {
+      "total_equivalence_classes": 816,
+      "violating_classes_count": 730,
+      "violating_records_count": 509,
+      "compliance_percentage": 88.49
+    }
+  },
+  "homogeneity_attack_examples": [
+    {
+      "quasi_identifier_values": {
+        "Age_Bracket": "<20",
+        "Gender": 0,
+        "Marital status": 2,
+        "Course": 9500
+      },
+      "class_size_k": 7,
+      "leaked_sensitive_target": "Graduate",
+      "leakage_probability": 1.0
+    },
+    {
+      "quasi_identifier_values": {
+        "Age_Bracket": "25-29",
+        "Gender": 0,
+        "Marital status": 1,
+        "Course": 9130
+      },
+      "class_size_k": 6,
+      "leaked_sensitive_target": "Dropout",
+      "leakage_probability": 1.0
+    },
+    {
+      "quasi_identifier_values": {
+        "Age_Bracket": "25-29",
+        "Gender": 1,
+        "Marital status": 1,
+        "Course": 9130
+      },
+      "class_size_k": 6,
+      "leaked_sensitive_target": "Dropout",
+      "leakage_probability": 1.0
+    }
+  ]
+}

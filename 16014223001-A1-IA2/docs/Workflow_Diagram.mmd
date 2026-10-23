@@ -1,0 +1,47 @@
+```mermaid
+flowchart TD
+    %% Dataset & Provenance
+    subgraph Data_Pipeline ["1. Data Ingestion & Provenance Audit"]
+        D1["UCI Student Dropout Dataset<br/>(4,424 records, 36 features, 3 classes)"] --> D2["Cryptographic Verification<br/>(SHA-256 Checksum Audit)"]
+        D2 --> D3["Data Cleaning & Integrity<br/>(0 nulls, 0 duplicates, column sanitization)"]
+        D3 --> D4["Stratified 80:20 Train-Test Split<br/>(Train: 3,539 | Test: 885)"]
+        D4 --> D5["Zero-Leakage StandardScaler<br/>(Fitted EXCLUSIVELY on Train Fold)"]
+    end
+
+    %% Model Training Pipelines
+    subgraph Model_Pipelines ["2. Model Architectures & Optimization"]
+        D5 --> M1["PyTorch Multi-Layer Perceptron (MLP)<br/>(36 -> 64 -> 32 -> 3 | No BatchNorm)"]
+        
+        M1 -->|Unconstrained Adam| B1["Model A: Baseline (Non-Private)<br/>(Infinite Budget: ε = ∞, δ = 0.0)"]
+        
+        M1 -->|Opacus PrivacyEngine| DP["Model B: Differentially Private (DP-SGD)"]
+        DP --> DP1["Per-Sample Gradient Clipping<br/>(Threshold C = 1.0)"]
+        DP1 --> DP2["Calibrated Gaussian Noise Injection<br/>(Scale σ ∈ [0.6879, 2.6562])"]
+        DP2 --> DP3["Rényi DP (RDP) Privacy Accountant<br/>(Fixed δ = 10^-5)"]
+        DP3 --> DP_MODELS["Trained DP Models<br/>(ε ∈ {1.0, 3.0, 5.0, 10.0})"]
+    end
+
+    %% Supplementary Syllabus Demonstrations
+    subgraph Supplementary_Modules ["3. Supplementary Syllabus Investigations"]
+        B1 & DP_MODELS --> MIA["Module 1: Membership Inference Attack<br/>(Loss-threshold / Generalization Gap)"]
+        D3 --> LDP["Module 3: Local Differential Privacy<br/>(Warner's Randomized Response on 'Debtor')"]
+        D3 --> KANON["Module 4: Privacy-Preserving Data Mining<br/>(k-Anonymity & Homogeneity Attack)"]
+        D5 --> PCA_COMP["Module 5: Compressive Privacy<br/>(PCA Dimension Sweep k ∈ [2..36])"]
+    end
+
+    %% Evaluation & Analysis
+    subgraph Evaluation_Reporting ["4. Evaluation, Trade-off Analysis & Outputs"]
+        B1 & DP_MODELS --> EVAL["Utility Evaluation<br/>(Accuracy, Macro/Weighted F1, Loss, Timing)"]
+        MIA --> MIA_RES["MIA Vulnerability Table & AUC Plot<br/>(Empirical Privacy Defense Proof)"]
+        LDP --> LDP_RES["LDP Trade-off: Privacy Budget vs Estimation Error"]
+        KANON --> KANON_RES["Equivalence Class Compliance & Leakage Analysis"]
+        PCA_COMP --> PCA_RES["PCA Utility vs Variance Trade-off"]
+        
+        EVAL & MIA_RES & LDP_RES & KANON_RES & PCA_RES --> ARTIFACTS["Final IA-2 Deliverables<br/>(Metrics Table, 10 Figures, Colab Notebook, Report)"]
+    end
+
+    style Data_Pipeline fill:#f8f9fa,stroke:#3498db,stroke-width:2px
+    style Model_Pipelines fill:#fdfefe,stroke:#2ecc71,stroke-width:2px
+    style Supplementary_Modules fill:#fcf3cf,stroke:#f39c12,stroke-width:2px
+    style Evaluation_Reporting fill:#ebf5fb,stroke:#8e44ad,stroke-width:2px
+```
